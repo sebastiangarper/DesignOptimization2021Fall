@@ -52,6 +52,11 @@ end
 % Run your implementation of SQP algorithm. See mysqp.m
 solution = mysqp(f, df, g, dg, x0, opt);
 
+optimalsolution = solution.x(:,end);
+g = g(solution.x(:,end))
+f = f(solution.x(:,end))
+
+sprintf('The optimal solutiion "converges" to x1 = (%.5g, %.5g). g = (%.3g, %.3g), and f = %.5g',optimalsolution(1),optimalsolution(2),g(1),g(2),f)
 
 %% Report
 %report(solution,f,g);
