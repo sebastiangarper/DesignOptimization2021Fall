@@ -55,13 +55,13 @@ end
 solution = mysqp(f, df, g, dg, x0, opt);
 
 optimalsolution = solution.x(:,end);
-g = g(solution.x(:,end))
-f = f(solution.x(:,end))
+goutput = g(solution.x(:,end))
+foutput = f(solution.x(:,end))
 
-sprintf('The optimal solutiion "converges" to x1 = (%.5g, %.5g). g = (%.3g, %.3g), and f = %.5g',optimalsolution(1),optimalsolution(2),g(1),g(2),f)
+sprintf('The optimal solution "converges" to x1 = (%.5g, %.5g). g = (%.3g, %.3g), and f = %.5g',optimalsolution(1),optimalsolution(2),goutput(1),goutput(2),foutput)
 
 %% Report
-%report(solution,f,g);
+report(solution,f,g);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -302,3 +302,24 @@ function [s, mu] = solve_activeset(x, W, c, A, b)
     mu = sol(numel(x)+1:numel(sol));    % Extract mu from the solution
 
 end
+
+
+function report(solution,foutput,goutput)
+
+f3dimensional = @(x,y) x.^2+(y-3).^2; 
+close all
+figure
+x=-5:.05:5;
+y=-.5:.05:5;
+[X,Y]=meshgrid(x,y);
+
+figure(1); hold on
+plot(solution.x(1,:),solution.x(2,:))
+plot(solution.x(1,end),solution.x(2,end),'*')
+contour(X,Y,f3dimensional(X,Y),30)
+xlim([-0.5 5]);ylim([-0.5 5])
+legend('Solution Convergence','Optimal Solution')
+title('Trajectory of Optimal Solution')
+xlabel('x_1');ylabel('x_2')
+
+end 
